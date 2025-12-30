@@ -53,6 +53,11 @@ graph TD
 - Use `address_id` for all transfer endpoints (onchain and offchain). Financial Institutions are deprecated and retained only for legacy flows.
 - Automations produce virtual accounts that resolve to addresses; they surface the `transfer_type` and `value_type` you configure.
 
+:::note
+- `type=internal` → Brale-custodied resources (accounts you own; addresses Brale holds for you or your managed accounts; automation virtual accounts).
+- `type=external` → Counterparty data you register (e.g., recipient bank/wallet addresses).
+:::
+
 ## Related links
 
 - [Accounts](/key-concepts/accounts)
