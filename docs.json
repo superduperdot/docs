@@ -38,6 +38,7 @@
         "pages": [
           "documentation/commons-stablecoin-format",
           "documentation/commons-repo",
+          "documentation/add-your-stablecoin",
           "documentation/calculators"
         ]
       },
