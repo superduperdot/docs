@@ -198,6 +198,6 @@
       "github": "https://github.com/Brale-xyz"
     }
   },
-  "openapi": "/api-reference/brale-openapi.yaml"
+  "openapi": "https://api.brale.xyz/openapi"
 }
 
