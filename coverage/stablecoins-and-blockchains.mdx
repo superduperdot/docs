@@ -1,6 +1,6 @@
 ---
 title: "Value Types"
-description: "Value Type's are supported stablecoins by the Brale API."
+description: "Value Type's are supported forms of value transfer in the Brale. They are what is being transferred."
 ---
 
 <p class="intro-subheading">
@@ -8,35 +8,15 @@ The Brale API supports Brale-issued stablecoins on 15+ popular blockchains along
 
 </p>
 
-| Blockchains              | Brale Issuance | USDC | USDP | RLUSD | API Identifier   |
-| :----------------------- | :------------- | :--- | :--- | :---- | :--------------- |
-| **Arbitrum**             | ✅              | ✅    |      |       | `arbitrum`       |
-| **Avalanche**            | ✅              | ✅    |      |       | `avalanche`      |
-| **Base**                 | ✅              | ✅    |      |       | `base`           |
-| **Canton**               | ✅              |      |      |       | `canton`         |
-| **Celo**                 | ✅              | ✅    |      |       | `celo`           |
-| **Cosmos (via IBC)**     | ✅              |      |      |       | `coreum`         |
-| **Coreum**               | ✅              |      |      |       | `coreum`         |
-| **Ethereum**             | ✅              | ✅    |      | ✅     | `ethereum`       |
-| **Ethereum Classic**     | ✅              |      |      |       | `classic`        |
-| **Hedera**               | ✅              | ✅    |      |       | `hedera`         |
-| **Optimism**             | ✅              | ✅    |      |       | `optimism`       |
-| **Polkadot / Kusama**    | ✅              |      |      |       | `kusama`         |
-| **Polygon**              | ✅              | ✅    |      |       | `polygon`        |
-| **Solana**               | ✅              | ✅    | ✅    |       | `solana`         |
-| **Spark**                | ✅              |      |      |       | `spark`          |
-| **Stellar**              | ✅              |      |      |       | `stellar`        |
-| **Vechain**              | ✅              |      |      |       | `vechain`        |
-| **XRP Ledger**           | ✅              |      |      | ✅     | `xrp_ledger`     |
-| **Xion**                 | ✅              |      |      |       | `xion`           |
-| **Base Sepolia Testnet** | ✅              |      |      |       | `base_sepolia`   |
-| **Canton Testnet**       | ✅              |      |      |       | `canton_testnet` |
-| **Polygon Amoy Testnet** | ✅              |      |      |       | `amoy`           |
-| **Sepolia Testnet**      | ✅              |      |      |       | `sepolia`        |
-| **Solana Devnet**        | ✅              |      |      |       | `solana_devnet`  |
-| **Xion Testnet**         | ✅              |      |      |       | `xion_testnet`   |
-| **Tempo Testnet**        | ✅              |      |      |       | `tempo_testnet`  |
+Base Currency
 
-Issuance supports each chain's popular token standards (ERC20, SPL Token). To view the full list of supported token standards, please see our blog: [Stablecoin token standards on leading blockchains](https://brale.xyz/blog/stablecoin-token-standards-on-leading-blockchains).
+Base currency is an important concept in the [Transfer](https://brale.mintlify.app/key-concepts/transfers) function of the API. Each stablecoin is bound 1:1 to it's backing base currency. The following Base currencies are supported in the API:
+
+| Currency  | API Identitier | Available for new issuance |
+| --------- | -------------- | -------------------------- |
+| US Dollar | USD            | ✅                          |
+| MXN Peso  | MXN            | ✅                          |
+
+ 
 
 If you’re interested in support for additional blockchains or stablecoins, please reach out to [support@brale.xyz](mailto:support@brale.xyz).
