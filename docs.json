@@ -46,7 +46,9 @@
           },
           {
             "group": "Calculators",
-            "pages": []
+            "pages": [
+              "tools/calculators/stablecoin-calculators"
+            ]
           }
         ]
       },
