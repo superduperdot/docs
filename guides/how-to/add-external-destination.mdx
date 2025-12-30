@@ -1,0 +1,132 @@
+---
+title: "Add an External Destination"
+description: "Register an external address (onchain or offchain) to use as a transfer source or destination."
+---
+
+## Overview
+
+Register an external address so you can use it as a transfer source or destination. External addresses can be onchain wallets, offchain bank accounts, or Canton parties.
+
+When you create an external address, Brale returns an `address_id` (KSUID) that binds the destination (wallet, party, or bank account) to its supported `transfer_types`. Use this `address_id` in all subsequent transfers.
+
+If the same user has wallets on multiple non-EVM chains (e.g., Solana and Stellar), create separate external addresses and you'll receive distinct `address_id` values for each.
+
+## Endpoint
+
+`POST /accounts/{account_id}/addresses/external`
+
+## Onchain wallets
+
+Each blockchain has its own address format. EVM-compatible chains share addresses, but non-EVM chains require separate entries.
+
+**EVM (one address, multiple chains)**
+
+```json
+{
+  "name": "User EVM Wallet",
+  "address": "0xb518d4d6221d9a41d23d71cbce8e106e7aab8f9b",
+  "transfer_types": ["ethereum", "base", "polygon", "arbitrum"]
+}
+```
+
+**Solana**
+
+```json
+{
+  "name": "User Solana Wallet",
+  "address": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+  "transfer_types": ["solana"]
+}
+```
+
+**Stellar**
+
+```json
+{
+  "name": "User Stellar Wallet",
+  "address": "GCZJM35NKGVK47BB4SPBDV25477PZYIYPVVG453LPYFNXLS3FGHDXOCM",
+  "transfer_types": ["stellar"]
+}
+```
+
+**XRP Ledger**
+
+```json
+{
+  "name": "User XRP Wallet",
+  "address": "rN7n3473SaZBCG4dFL83w7a1RXtXtbk2D9",
+  "transfer_types": ["xrp_ledger"]
+}
+```
+
+**Canton**
+
+```json
+{
+  "name": "External Canton Party",
+  "address": "canton-party-id",
+  "transfer_types": ["canton"]
+}
+```
+
+> **Note:** Canton transfers to external parties require acceptance within 72 hours or they expire. Transfers to parties also custodied by Brale are accepted automatically.
+
+## Offchain bank account (ACH/Wire/RTP)
+
+```json
+{
+  "owner": "Jane Doe",
+  "name": "Jane Checking Account",
+  "account_number": "123456789",
+  "routing_number": "071000013",
+  "account_type": "checking",
+  "bank_address": {
+    "street_line_1": "10 N Upper Wacker Dr",
+    "city": "Chicago",
+    "state": "IL",
+    "zip": "60606",
+    "country": "USA"
+  },
+  "beneficiary_address": {
+    "street_line_1": "200 Main St",
+    "city": "Naperville",
+    "state": "IL",
+    "zip": "60540",
+    "country": "USA"
+  },
+  "transfer_types": ["ach_credit", "ach_debit", "wire"]
+}
+```
+
+## Example request
+
+```bash
+curl --request POST \
+  --url "https://api.brale.xyz/accounts/${ACCOUNT_ID}/addresses/external" \
+  --header "Authorization: Bearer ${AUTH_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --header "Idempotency-Key: $(uuidgen)" \
+  --data '{
+    "name": "User Solana Wallet",
+    "address": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+    "transfer_types": ["solana"]
+  }'
+```
+
+## Example response
+
+```json
+{
+  "id": "2VcUIIsgARwVbEGlIYbhg6fGG57"
+}
+```
+
+Use this `id` as the `address_id` in transfers.
+
+## Notes
+
+- External addresses have `type: external` when fetched via `GET /addresses`.
+- You cannot query balances for external addresses—only internal (custodial) ones.
+- Bank accounts can also be linked via [Plaid](/key-concepts/addresses#register-address-exchange-the-public-token) instead of manual entry.
+- You can add `transfer_types` to an existing address via `PATCH /addresses/{address_id}`.
+- See [Transfer Types](/docs/coverage/transfer-types) for all supported chains/rails.
