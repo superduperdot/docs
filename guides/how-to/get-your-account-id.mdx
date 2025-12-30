@@ -1,5 +1,58 @@
----
-title: "Get Your AccountID"
+title: "Get your account_id (yours or a managed client account)"
+description: "Retrieve your own Brale account_id and, if you manage client accounts, list and select managed account_ids."
 ---
 
-get
+Use the Accounts API to fetch your own account_id and any managed client accounts under your tenant. You’ll need a bearer token from your client credentials first.
+
+<Steps>
+<Step title="Authenticate and get a bearer token">
+
+Create client credentials in the Brale dashboard, then exchange them for a bearer token.
+
+```bash
+curl --request POST \
+  --url https://auth.brale.xyz/oauth2/token \
+  --header 'Authorization: Basic ${BASE_64_OF(client_id:client_secret)}' \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data grant_type=client_credentials
+```
+
+Response includes `access_token` and `token_type` (Bearer). Use `Authorization: Bearer ${access_token}` for subsequent calls.
+
+</Step>
+
+<Step title="List your accounts">
+
+Call `GET /accounts` with your bearer token to fetch account_ids:
+
+```bash
+curl --request GET \
+  --url https://api.brale.xyz/accounts \
+  --header "Authorization: Bearer ${ACCESS_TOKEN}"
+```
+
+Example response:
+
+```json
+{
+  "accounts": [
+    "2Js1YFqlfxgNqC2KTPEjrWIwKU7",   // Your primary account_id
+    "2VcUIIsgARwVbEGlIYbhg6fGG57"    // Managed client account_id (if applicable)
+  ]
+}
+```
+
+</Step>
+
+<Step title="Select the right account_id for downstream calls">
+
+- Use your primary account_id for operations on your own balances and resources.
+- If you manage client accounts (managed accounts), use the client’s account_id in path parameters for downstream endpoints (e.g., transfers, addresses).
+- Do not send account_id in the request body or querystring—only in the path where required.
+
+</Step>
+</Steps>
+
+<Tip>
+If you only see one account_id returned, that’s your primary account. Managed client accounts will appear in the same list once created.
+</Tip>
