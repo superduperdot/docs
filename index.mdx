@@ -1,56 +1,84 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Brale API Docs"
+description: "Issue, move, and manage stablecoins with Brale's APIs."
 ---
 
-## Setting up
-
-Get your documentation site up and running in minutes.
-
-<Card title="Start here" icon="rocket" horizontal href="/quickstart">
-  Follow our three step quickstart guide.
+<Card
+  title="Build fast with Brale"
+  icon="rocket"
+  href="/overview/quick-start"
+  horizontal
+>
+  Get your credentials, fetch your account and address IDs, and send your first transfer.
 </Card>
 
-## Make it yours
+## Start here
 
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card title="Edit locally" icon="pen-to-square" href="/development">
-    Edit your docs locally and preview them in real time.
+<Columns cols={3}>
+  <Card title="Quick Start" icon="bolt" href="/overview/quick-start">
+    5-minute path to your first transfer on testnet.
   </Card>
-  <Card title="Customize your site" icon="palette" href="/essentials/settings">
-    Customize the design and colors of your site to match your brand.
+  <Card title="API keys & auth" icon="key" href="/key-concepts/authentication">
+    Create client credentials and fetch a bearer token.
   </Card>
-  <Card title="Set up navigation" icon="map" href="/essentials/navigation">
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card title="API documentation" icon="terminal" href="/api-reference/introduction">
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Testnet" icon="flask" href="/overview/sandbox-and-testnet">
+    Use testnet networks (no fiat leg) to build safely.
   </Card>
 </Columns>
 
-## Create beautiful pages
+## Core concepts
 
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card title="Write with MDX" icon="pen-fancy" href="/essentials/markdown">
-    Use MDX to style your docs pages.
+<Columns cols={3}>
+  <Card title="API concepts" icon="circle-info" href="/key-concepts/api-concepts-overview">
+    How Accounts, Addresses, Transfers, and FI links fit together.
   </Card>
-  <Card title="Code samples" icon="code" href="/essentials/code">
-    Add sample code to demonstrate how to use your product.
+  <Card title="Transfers" icon="arrows-rotate" href="/key-concepts/transfers">
+    Structure, value types, and idempotency.
   </Card>
-  <Card title="Images" icon="image" href="/essentials/images">
-    Display images and other media.
-  </Card>
-  <Card title="Reusable snippets" icon="recycle" href="/essentials/reusable-snippets">
-    Write once and reuse across your docs.
+  <Card title="Coverage" icon="globe" href="/coverage/stablecoins-and-blockchains">
+    Supported stablecoins, blockchains, and payment methods.
   </Card>
 </Columns>
 
-## Need inspiration?
+## Build workflows
 
-<Card title="See complete examples" icon="stars" href="https://mintlify.com/customers">
-  Browse our showcase of exceptional documentation sites.
+<Columns cols={3}>
+  <Card title="Onramp (fiat → stablecoin)" icon="arrow-up-right" href="/guides/fiat-to-stablecoin-onramp">
+    Move USD to stablecoin on supported chains.
+  </Card>
+  <Card title="Offramp (stablecoin → fiat)" icon="arrow-down-left" href="/guides/stablecoin-to-fiat-offramp">
+    Convert stablecoin back to USD.
+  </Card>
+  <Card title="Swap stablecoins/chains" icon="shuffle" href="/guides/stablecoin-to-stablecoin-swap">
+    Swap between stablecoins or networks.
+  </Card>
+  <Card title="Issue your stablecoin" icon="certificate" href="/guides/stablecoin-issuance">
+    Create and manage a branded stablecoin with Brale.
+  </Card>
+  <Card title="Managed accounts" icon="users" href="/guides/managed-accounts">
+    Manage funds for end customers with managed accounts.
+  </Card>
+  <Card title="Payouts" icon="money-bill-transfer" href="/guides/stablecoin-payouts">
+    Send payouts programmatically.
+  </Card>
+</Columns>
+
+## Tools
+
+<Columns cols={3}>
+  <Card title="API Reference" icon="terminal" href="/api-reference/brale-introduction">
+    Playground powered by OpenAPI.
+  </Card>
+  <Card title="OpenAPI spec" icon="file-code" href="https://api.brale.xyz/openapi">
+    Import into your IDE or client generator.
+  </Card>
+  <Card title="Commons & SDK helpers" icon="code-branch" href="/documentation/commons-repo">
+    Shared resources and formats for building on Brale.
+  </Card>
+</Columns>
+
+## Need help?
+
+<Card title="Talk to us" icon="comments" href="mailto:support@brale.xyz">
+  Reach out for implementation help or to set up a shared Slack/Telegram channel.
 </Card>
