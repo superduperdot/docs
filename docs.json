@@ -12,6 +12,20 @@
   },
   "favicon": "/images/brale/favicon.svg",
   "navigation": {
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Dashboard",
+          "icon": "book-open-cover",
+          "href": "https://app.brale.xyz"
+        },
+        {
+          "anchor": "Status",
+          "icon": "circle-info",
+          "href": "https://status.brale.xyz"
+        }
+      ]
+    },
     "tabs": [
       {
         "tab": "Docs",
@@ -100,21 +114,7 @@
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Dashboard",
-          "href": "https://app.brale.xyz",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Status",
-          "href": "https://status.brale.xyz",
-          "icon": "circle-info"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/images/brale/brale-logo-light.svg",
