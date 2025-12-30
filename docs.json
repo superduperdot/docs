@@ -7,6 +7,9 @@
     "light": "#6938EF",
     "dark": "#18181B"
   },
+  "seo": {
+    "indexing": "all"
+  },
   "favicon": "/images/brale/favicon.svg",
   "navigation": {
     "tabs": [
