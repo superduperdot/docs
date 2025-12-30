@@ -8,7 +8,7 @@ title: 'Financial Institutions'
 </p>
 
 :::warning[Legacy / Deprecated]
-The Financial Institutions resource is superseded by Addresses. New integrations should create offchain accounts (ACH, wire, RTP) as Addresses and pass their `address_id` to Transfers. Plaid endpoints are now under /plaid/\*. Existing FI integrations continue to work during a deprecation window.
+The Financial Institutions resource is superseded by Addresses. New integrations should create offchain accounts (ACH, wire, RTP) as Addresses and pass their `address_id` to Transfers. Plaid endpoints are now under `/plaid/*`. Existing FI integrations continue to work during a deprecation window.
 :::
 
 You can add external accounts through:
@@ -46,7 +46,7 @@ Link your customer's bank account by adding it to their Account.
 ```
 
 :::note
-You can also add Financial Institutions through the Brale Dashboard settings page https://app.brale.xyz/settings.
+You can also add Financial Institutions through the Brale Dashboard settings page at https://app.brale.xyz/settings.
 :::
 
 ## Fetching Financial Institutions
@@ -86,9 +86,9 @@ This guide walks you through how to enable your customers to securely link their
 
 1. Request a Plaid Link Token from Brale.
 2. Initialize Plaid Link in your front-end using the `link_token`.
-3. Plaid returns a `public_token` once the user has successfully linked their account.
+3. Plaid returns a `public_token` once the user successfully links their account.
 4. Exchange the `public_token` with Brale to finalize the linking process.
-5. Fetch the newly created Financial Institutions for the end user, then proceed with transfers, etc.
+5. Fetch the newly created Financial Institutions for the end user, then proceed with transfers.
 
 ### Request a Plaid Link Token
 
@@ -96,12 +96,14 @@ This guide walks you through how to enable your customers to securely link their
 
 ```json title="Request"
 {
-  "date_of_birth": "1990-01-01", // Optional
-  "email_address": "user@example.com", // Optional
-  "legal_name": "John Doe", // Optional
-  "phone_number": "+1234567890" // Optional
+  "date_of_birth": "1990-01-01",
+  "email_address": "user@example.com",
+  "legal_name": "John Doe",
+  "phone_number": "+1234567890"
 }
 ```
+
+All fields above are optional; supply what you collect from the user.
 
 ```json title="Response"
 {
@@ -142,13 +144,13 @@ Send us the public_token you received from Plaid Link. Brale securely exchanges 
 }
 ```
 
-After this call completes, our system retrieves the linked bank account and creates a Financial Insitution for the account the user selected.
+After this call completes, our system retrieves the linked bank account and creates a Financial Institution for the account the user selected.
 
 ### Check for newly created Financial Institutions
 
 Shortly after exchanging the public token, the user's bank accounts are idempotently created as Financial Institutions which you can query.
 
-**GET** `https://api.brale.xyz/accounts/account_id/financial-institutions/{id}`
+**GET** `https://api.brale.xyz/accounts/{account_id}/financial-institutions/{id}`
 
 ```json title="Response"
 {
