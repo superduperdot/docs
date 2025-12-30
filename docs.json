@@ -30,7 +30,23 @@
       {
         "tab": "Documentation",
         "pages": [
-          "documentation/introduction"
+          "documentation/introduction",
+          {
+            "group": "API Design",
+            "pages": [
+              "documentation/api-design/primitives",
+              "documentation/api-design/structure"
+            ]
+          },
+          {
+            "group": "Platform",
+            "pages": [
+              "documentation/platform/company-overview",
+              "documentation/platform/stablecoin-issuance",
+              "documentation/platform/tokenization",
+              "documentation/platform/reserves"
+            ]
+          }
         ]
       },
       {
