@@ -29,9 +29,9 @@
     "tabs": [
       {
         "tab": "Docs",
-        "products": [
+        "groups": [
           {
-            "product": "Overview",
+            "group": "Overview",
             "pages": [
               "overview/introduction",
               "overview/quick-start",
@@ -39,7 +39,7 @@
             ]
           },
           {
-            "product": "Key concepts",
+            "group": "Key concepts",
             "pages": [
               "key-concepts/api-concepts-overview",
               "key-concepts/authentication",
@@ -52,14 +52,14 @@
             ]
           },
           {
-            "product": "Coverage",
+            "group": "Coverage",
             "pages": [
               "docs/coverage/transfer-types",
               "coverage/stablecoins-and-blockchains"
             ]
           },
           {
-            "product": "IO",
+            "group": "IO",
             "pages": [
               "io/introduction",
               "io/url-navigation"
