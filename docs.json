@@ -25,7 +25,7 @@
     },
     "tabs": [
       {
-        "tab": "Documentation",
+        "tab": "Information",
         "pages": [
           "documentation/introduction",
           "documentation/troubleshooting",
@@ -50,7 +50,7 @@
         ]
       },
       {
-        "tab": "Information",
+        "tab": "Tools",
         "groups": [
           {
             "group": "Commons",
