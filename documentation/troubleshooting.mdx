@@ -12,6 +12,12 @@ Use this checklist when integrating and operating at volume.
 - Tokens expire in ~60 minutes; refresh using `expires_in` before expiry.
 - 401 → refresh token, retry idempotently. Do not keep reusing an expired token.
 
+## Environments & identifiers
+
+- Single account context: your `account_id` is the same on testnet and mainnet.
+- Environment-scoped clients: an API client is either testnet or mainnet, never both.
+- Use the correct client when minting the access token; a testnet client used on mainnet (or vice versa) will fail.
+
 ## Idempotency
 
 - Required on POST create endpoints (e.g., transfers). Missing key → 400.
@@ -41,6 +47,21 @@ Use this checklist when integrating and operating at volume.
 
 - Required: `Authorization: Bearer <token>`, `Content-Type: application/json` on JSON POSTs, `Idempotency-Key` on create POSTs.
 - Avoid sending unexpected headers (including Idempotency-Key) on GET.
+
+## Common errors
+
+### 403 `network_not_supported`
+
+- Usually caused by using a testnet-scoped API client for a mainnet request, or a mainnet client for testnet.
+- Fix: use an API client created for the target environment and mint a new access token.
+
+### 404 `compatible_address_not_found`
+
+- Causes:
+  - address is not compatible with the requested `transfer_type` in that environment
+  - typo in `address_id`
+  - `address_id` does not belong to the specified `account_id` on an account-scoped route
+- Fix: verify the `address_id` belongs to the `account_id`, ensure the address supports the `transfer_type`, and double-check casing.
 
 ## When in doubt
 
