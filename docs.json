@@ -95,7 +95,8 @@
           {
             "group": "Coverage",
             "pages": [
-              "documentation/api-design/structure"
+              "coverage/transfer-types",
+              "coverage/value-types"
             ]
           },
           {
