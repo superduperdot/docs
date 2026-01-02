@@ -1,80 +1,123 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: "Quick Start - Your First Transfer"
+description: "Get authenticated, grab your IDs, and create your first stablecoin transfer in minutes."
 ---
 
-## Get started in three steps
+## Prerequisites
+- Brale account (KYB started/completed)
+- API client created for the right environment (testnet or mainnet)
+- `curl` (or HTTP client) and ability to Base64-encode `client_id:client_secret`
 
-Get your documentation site running locally and make your first customization.
+## Quick path (copy/paste)
+1) Auth → `access_token`
+2) Get `account_id`
+3) Get custodial `address_id` (internal)
+4) POST transfer with `Idempotency-Key`
+5) Poll transfers for status
 
-### Step 1: Set up your local environment
+## 1. Sign up for Brale
+Complete KYB to enable API access.
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+## 2. Create API credentials (mainnet vs testnet)
+Create an API client in the Dashboard. Keys are shown once—store them securely.  
+Clients are environment-scoped; use testnet while integrating, mainnet when ready to move value.
 
-### Step 2: Deploy your changes
+## 3. Authenticate (client_credentials; short-lived tokens)
+Tokens expire in ~60 minutes; refresh using `expires_in` before expiry.
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+```bash
+curl --request POST \
+  --url https://auth.brale.xyz/oauth2/token \
+  --header 'Authorization: Basic ${BASE_64_OF(client_id:client_secret)}' \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data grant_type=client_credentials
+```
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+Expected fields: `access_token`, `token_type` (Bearer), `expires_in`.
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+## 4. Get your `account_id` (KSUID)
+Use the bearer token from Step 3.
 
-### Step 3: Go live
+```bash
+curl --request GET \
+  --url https://api.brale.xyz/accounts \
+  --header "Authorization: Bearer ${AUTH_TOKEN}"
+```
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+Response (keep this ID for later):
+
+```json
+{ "accounts": ["2Js1YFqlfxgNqC2KTPEjrWIwKU7"] }
+```
+
+## 5. Get your custodial `address_id` (internal)
+Brale auto-creates internal wallets per account (EVM, Solana, Stellar). Use the bearer token and your `ACCOUNT_ID`.
+
+```bash
+ACCOUNT_ID="2Js1YFqlfxgNqC2KTPEjrWIwKU7"
+
+curl --request GET \
+  --url "https://api.brale.xyz/accounts/${ACCOUNT_ID}/addresses" \
+  --header "Authorization: Bearer ${AUTH_TOKEN}"
+```
+
+Response (keep an internal `address_id`):
+
+```json
+{
+  "addresses": [
+    {
+      "id": "2MhCCIHulVdXrHiEuQDJvnKbSkl",
+      "type": "internal",
+      "transfer_types": ["base", "ethereum", "polygon", "solana", "stellar", "arbitrum", "optimism", "celo", "avalanche", "xrp_ledger", ...]
+    }
+  ]
+}
+```
+
+<details>
+<summary>Supported transfer_types (mainnet/testnet)</summary>
+
+**Mainnet (onchain):** `ethereum`, `base`, `solana`, `canton`, `stellar`, `polygon`, `avalanche`, `optimism`, `arbitrum`, `hedera`, `celo`, `kusama`, `spark`, `xrp_ledger`  
+**Offchain:** `wire`, `ach-debit`, `ach-credit`, `same-day-ach-credit`, `rtp-credit`  
+**Testnet:** `base_sepolia`, `canton_testnet`, `amoy`, `sepolia`, `solana_devnet`, `xion_testnet`, `tempo_testnet`
+</details>
+
+## 6. Create your first transfer (Idempotency-Key required)
+Example: offchain wire → onchain stablecoin on Base. Always send a unique `Idempotency-Key` per logical transfer and reuse it on retries.
+
+Headers: `Authorization: Bearer`, `Content-Type: application/json`, `Idempotency-Key: $(uuidgen)`
+
+```bash
+ADDRESS_ID="2MhCCIHulVdXrHiEuQDJvnKbSkl"
+
+curl --request POST \
+  --url "https://api.brale.xyz/accounts/${ACCOUNT_ID}/transfers" \
+  --header "Content-Type: application/json" \
+  --header "Authorization: Bearer ${AUTH_TOKEN}" \
+  --header "Idempotency-Key: $(uuidgen)" \
+  --data '{
+    "amount": { "value": "10", "currency": "USD" },
+    "source": { "value_type": "USD", "transfer_type": "wire" },
+    "destination": {
+      "address_id": "'"${ADDRESS_ID}"'",
+      "value_type": "SBC",
+      "transfer_type": "base"
+    }
+  }'
+```
+
+Expect: `id`, `status` (`pending` → `processing` → `complete`), `wire_instructions` for funding.
+
+## 7. Poll and reconcile
+- Poll `GET /accounts/{account_id}/transfers` with pagination tokens; store `id`, idempotency key, timestamps, status, references.
+- On 401, refresh the token and retry idempotently with the same `Idempotency-Key`.
+
+## Common errors
+- `403 network_not_supported`: Using a testnet client/token on mainnet (or vice versa). Mint a token with a client for the target environment.
+- `404 compatible_address_not_found`: Address doesn’t support the `transfer_type`, typo in `address_id`, or wrong `account_id` in the path.
+- `400 missing Idempotency-Key`: All POST creates must include `Idempotency-Key`.
 
 ## Next steps
-
-Now that you have your docs running, explore these key features:
-
-<CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
-</CardGroup>
-
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>
+- See Guides for on/off-ramps, swaps, payouts.
+- For production hardening, review Troubleshooting and Coverage (transfer_types, value_types).
